@@ -1,1 +1,1 @@
-New Features in v2.4.1:<br>- New Update Message<br>- Minor Animation Tweaks<br>- Added Bloxorz
+New Features in v2.4.1:<br><br>- Shows changelog/new features before updates<br>- Minor Animation Tweaks<br>- Moved return to game button to make it more visible<br>- Added Bloxorz

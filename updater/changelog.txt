@@ -1,1 +1,1 @@
-<b>New Features in v2.5.0:</b><br>- Shows changelog/new feature between updates [this message ;)]<br>- Moved "Return to Game" button to top of page to make it more visible<br>- Minor Animation Tweaks<br>- Added Bloxorz
+<b>New Features in v2.5.1:</b><br>- Added Papa's Pizzaria<br>- Fixed Bloxorz not letting you respawn

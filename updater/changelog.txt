@@ -1,1 +1,1 @@
-<b>New Features in v2.5.1:</b><br>- Added Papa's Pizzaria<br>- Fixed Bloxorz not letting you respawn
+<b>New Features in v2.5.1:</b><br>- Added Papa's Pizzeria<br>- Fixed Bloxorz not letting you respawn

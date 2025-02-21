@@ -1,1 +1,1 @@
-<b>New Features in v2.5.1:</b><br>- Added Papa's Pizzeria<br>- Fixed Bloxorz not letting you respawn
+<b>New Features in v3.0.0:</b><br>- Auto Updating is back! After you update to v3.0.0, new features will be added to the site automatically, no need to download every update!<br>- Fixed Bloxorz & Papa’s Pizzeria

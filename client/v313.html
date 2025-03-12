@@ -1,0 +1,925 @@
+<html>
+
+<head>
+
+    <title>Home | Schoology</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link id="icon" rel="icon" type="image/x-icon"
+        href="https://wellesleyps.org/fiske/wp-content/uploads/sites/4/2020/09/powerschool-P-logo-300x300.png">
+
+
+    <style>
+        @keyframes glowingborder {
+            0% {
+                border-color: blue;
+            }
+
+            50% {
+                border-color: #1282DF;
+            }
+
+            100% {
+                border-color: blue;
+            }
+        }
+
+        @keyframes rotatebounce {
+            0% {
+                transform: rotate(2.5deg);
+            }
+
+            50% {
+                transform: rotate(-2.5deg);
+            }
+
+            100% {
+                transform: rotate(2.5deg);
+            }
+        }
+
+        #grayTransition {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: #2D3748;
+            transition: 1s;
+            z-index: 9;
+            display: none;
+        }
+
+        .title-container {
+            width: 500px;
+        }
+
+        .title-container input[type="text"] {
+            width: 400px;
+            padding: 18px;
+            color: black;
+            border-radius: 14px;
+            border: none;
+            opacity: .7;
+        }
+
+        .title-container input[type="text"]:not(:placeholder-shown) {
+            opacity: 1;
+        }
+
+        .title-container .updatebtn {
+            margin-left: 10px;
+            opacity: .7;
+            cursor: not-allowed;
+            width: 80px;
+        }
+
+        .title-container input[type="text"]:not(:placeholder-shown)+#titlebtn {
+            opacity: 1;
+            cursor: pointer;
+        }
+
+        .title-container input[type="text"]:not(:placeholder-shown)+#titlebtn:hover {
+            background-color: #7c828d;
+        }
+
+        .title-container .titlepreset {
+            margin: 0 5px;
+        }
+
+        .title-container .titlepreset:hover {
+            background-color: #7c828d;
+        }
+
+        #game-selector {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #2D3748;
+            text-align: center;
+            scroll-behavior: auto;
+            overflow: auto;
+            transition: transform .75s, visibility 0s;
+            z-index: 10;
+            visibility: visible;
+        }
+
+        p,
+        a,
+        h1,
+        h2,
+        h3,
+        h4,
+        button,
+        input {
+            color: white;
+            font-family: "Roboto", serif;
+        }
+
+        button {
+            padding: 18px;
+            background-color: #626976;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        #game-selector h1 {
+            font-weight: 900;
+            font-size: 36px;
+        }
+
+        .game-list {
+            padding: 20px 40px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .game-card {
+            width: 136px;
+            height: 200px;
+            background-repeat: no-repeat;
+            background-size: 100%;
+            border-radius: 14px;
+            box-shadow: 0px;
+            border: 8px #626976 solid;
+            transition: .1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            float: left;
+            margin: 20px;
+            user-select: none;
+        }
+
+        .game-card:hover {
+            transform: scale(110%);
+            box-shadow: 0 0 20px 8px rgba(255, 255, 255, 0.63);
+            border-color: white;
+            transition: .2s ease-out;
+        }
+
+        .game-card p {
+            text-align: center;
+            font-size: 28px;
+            margin: 8px 0;
+            font-weight: 800;
+        }
+
+        .game-card p i,
+        .game-card p b {
+            font-size: 14px;
+        }
+
+        .game-card:hover p {
+            font-size: 22px;
+            animation: rotatebounce infinite 1s linear;
+        }
+
+        .game-card:hover p i {
+            transition: .2s;
+            font-size: 0px;
+        }
+
+        .game-card:hover p b {
+            transition: .2s;
+            font-size: 16px;
+        }
+
+        .game-card button {
+            position: absolute;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0%);
+            padding: 12px 0px;
+            border-radius: 8px;
+            width: 100px;
+            margin: 4px 0;
+            background-color: #D3DBE6;
+            color: #0D0745;
+        }
+
+        .game-card button i {
+            margin-right: 5px;
+            color: #0D0745;
+            cursor: pointer;
+        }
+
+        .game-card:hover button {
+            position: static;
+            opacity: 1;
+            visibility: visible;
+            transform: scale(100%);
+            transition: opacity 0.3s ease, transform 0.3s cubic-bezier(.59, 0, .44, 1.4), visibility 0.3s ease;
+        }
+
+        .game-card button i.grayed {
+            color: #7d7d7d;
+        }
+
+        .game-card button i.favorited {
+            color: #FF0035;
+        }
+
+        .game-card button:hover {
+            transform: scale(110%);
+            transition: .15s;
+        }
+
+        #game-embed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        #menu {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            background-color: #2D3748;
+            z-index: 5;
+            width: 50px;
+            height: 50px;
+            border-top-left-radius: 18px;
+            border: solid white 5px;
+            border-bottom-width: 0;
+            border-right-width: 0;
+            transition: .5s, display 0s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #menu .options {
+            display: none;
+            transform: rotate(-180deg);
+            opacity: 0;
+            transition: .5s;
+        }
+
+        #menu p {
+            font-size: 36px;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        #menu.enlarged {
+            transform: scale(400%) translate(-20px, -20px);
+            animation: glowingborder infinite .5s linear;
+            cursor: default;
+        }
+
+        #menu:hover {
+            height: auto;
+            display: block;
+            width: auto;
+        }
+
+        #menu.enlarged:hover {
+            opacity: 1;
+            width: 50px;
+            height: 50px;
+        }
+
+        #menu:hover .options {
+            display: block;
+            opacity: 1;
+            transform: rotate(0deg);
+            overflow: hidden;
+            padding: 10px 25px;
+        }
+
+        #menu.enlarged:hover .options {
+            display: none;
+        }
+
+        #menu:hover .options p {
+            text-align: right;
+            font-size: 24px;
+            margin: 4px 0;
+            cursor: pointer;
+            transition: .25s;
+            opacity: .8;
+        }
+
+        #menu:hover .options p i {
+            margin-left: 5px;
+        }
+
+        #menu:hover .options p:hover {
+            font-weight: 600;
+            opacity: 1;
+        }
+
+        #menu:hover .expand {
+            display: none;
+        }
+
+        #menu.enlarged:hover .expand {
+            display: block;
+        }
+
+        #menutext {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #2D3748;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            z-index: 2;
+            transition: .75s;
+            transition-delay: .25s;
+        }
+
+        #menutext h1 {
+            transition: .75s;
+        }
+
+        #version,
+        #changelog {
+            transition: .25s;
+        }
+
+        #returnToGame {
+            display: none;
+        }
+
+        #returnToGame button {
+            margin: 20px 0 10px 0;
+            font-size: 20px;
+            padding: 24px;
+            border: white solid 4px;
+            background: none;
+            opacity: .8;
+            font-weight: 400;
+        }
+
+        #returnToGame button:hover {
+            opacity: 1;
+            font-weight: 600;
+        }
+
+        .fa-solid {
+            color: white;
+        }
+
+        .advancment-easteregg {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 800px;
+            z-index: 99999999;
+            transition: .5s;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <img src="https://president-of-the-math-team.com/img/HowDidWeGetHere.png" style="display: none;"
+        class="advancment-easteregg" />
+
+    <!-- Return to Menu Button -->
+
+    <div id="menu" style="display:none;" class="enlarged" onclick="menuClick();">
+        <p class="expand">&equiv;</p>
+        <div class="options">
+            <p onclick="document.getElementById('game-embed').src = document.getElementById('game-embed').src">Reset
+                Game <i class="fa-solid fa-rotate-right"></i></p>
+            <p onclick="document.getElementById('game-selector').style.display = 'block';">Full Menu <i
+                    class="fa-solid fa-up-right-and-down-left-from-center"></i></p>
+        </div>
+    </div>
+
+    <!-- Return to menu text -->
+
+    <div id="menutext">
+        <h1>Use the button on the bottom right to return to the menu!</h1>
+    </div>
+
+    <!-- Game Embed -->
+
+    <iframe id="game-embed" src="about:blank" frameborder="0"></iframe>
+
+    <!-- Main Page -->
+
+    <div id="grayTransition"></div>
+
+    <div id="game-selector">
+
+        <h1>POTMT Unblocker</h1>
+        <p><i id="version">client version v3.1.3 - <a
+                    href='javascript:fetch("https://president-of-the-math-team.com/versions.json", { cache: "no-store" }).then(responce => {responce.json().then(data => { document.getElementById("launcherVersion").remove(); var currentVersion = "v" + location.href.split("/").pop().split("#")[0].split("?")[0].replace(".html","").replace("v","").split("").join("."); var latestVersion = "v" + data.launcher; console.log("${currentVersion} vs. ${latestVersion}"); if (currentVersion == latestVersion) { message = "launcher version " + currentVersion + " (up to date)"; } else { message = "launcher version " + currentVersion + " (<a href=\"https://docs.google.com/document/d/1v9ajotmNecet5XaoecaiNxgn7PdGwP2_-oWqww-sUcU/edit?tab=t.0\">download " + latestVersion + " here</a>)"; } document.getElementById("version").innerHTML = document.getElementById("version").innerHTML + message; })});'
+                    id="launcherVersion">check launcher version</a></i>
+            <br></br><a target="_blank"
+                href="https://docs.google.com/document/d/1v9ajotmNecet5XaoecaiNxgn7PdGwP2_-oWqww-sUcU/edit?usp=sharing">Get
+                Support, Report a Bug, or Suggest a Game Here!</a>
+        </p>
+
+
+        <div id="returnToGame">
+            <button onclick="document.getElementById('game-selector').style.display = 'none';">&#x2715; Close
+                Menu/Return to Game</button>
+        </div>
+
+        <div id="favorites" style="display:none;">
+            <h2 style="margin-top: 48px; margin-bottom:0px;">Favorites</h2>
+            <div class="game-list" id="favoritesList"></div>
+        </div>
+
+        <div id="generalheader">
+            <h2 style="margin-top: 28px;">Select a Game</h2>
+            <span class="title-container">
+                <input type="text" id="urlinput" placeholder="Or type an URL here ( ex. 'https://example.com' )">
+                <button class="updatebtn" id="titlebtn"
+                    onclick="if(document.getElementById('urlinput').value.length > 0){if (document.getElementById('menutext')!=null) { setTimeout(() => { document.getElementById('menu').classList.remove('enlarged'); document.getElementById('menutext').remove(); }, 3000); setTimeout(() => { document.getElementById('menutext').style.opacity = '0'; document.getElementById('menutext').getElementsByTagName('h1')[0].style.fontSize = '0px'; }, 2000); document.getElementById('game-selector').style.display = 'none'; document.getElementById('returnToGame').style.display = 'block'; } else { document.getElementById('grayTransition').style.display = 'block'; document.getElementById('returnToGame').style.display = 'none'; document.getElementById('game-selector').style.transform = 'scale(0)'; document.getElementById('game-selector').style.overflow = 'hidden'; setTimeout(() => { document.getElementById('grayTransition').style.opacity = '0'; }, 500); setTimeout(() => { document.getElementById('game-selector').style.display = 'none'; document.getElementById('grayTransition').style.display = 'none'; }, 1500); setTimeout(() => { document.getElementById('returnToGame').style.display = 'block'; document.getElementById('game-selector').style.transform = 'scale(100%)'; document.getElementById('game-selector').style.overflow = 'auto'; document.getElementById('grayTransition').style.opacity = '1'; }, 2000); } document.getElementById('menu').style.display = 'flex'; document.getElementById('game-embed').src = document.getElementById('urlinput').value;}">Go</button>
+            </span>
+        </div>
+
+        <div class="game-list" id="gameList">
+            <div id="gamecard-1" class="game-card"
+                style="background-image: url('https://president-of-the-math-team.com/img/chatgpttitlecard.png')">
+                <p>ChatGPT</p>
+                <button onclick='updateURL("https://talkai.info/chat")'><i
+                        class="fa-solid fa-arrow-up-right-from-square"></i> Launch</button>
+                <button onclick='favoriteScript(this);'><i class="fa-solid fa-heart grayed"></i>
+                    <t>Favorite</t>
+                </button>
+            </div>
+
+            <div id="gamecard-2" class="game-card"
+                style="background-image: url('https://president-of-the-math-team.com/img/mototitlecard.png')">
+                <p>Moto<br>X3M</p>
+                <button onclick='updateURL("https://motox3monline.io/moto-x3m.embed");'><i
+                        class="fa-solid fa-arrow-up-right-from-square"></i> Launch</button>
+                <button onclick='favoriteScript(this);'><i class="fa-solid fa-heart grayed"></i>
+                    <t>Favorite</t>
+                </button>
+            </div>
+
+            <div id="gamecard-3" class="game-card"
+                style="background-image: url('https://president-of-the-math-team.com/img/ballistictitlecard.png')">
+                <p>Ballistic</p>
+                <button onclick='updateURL("https://ubg98.github.io/Ballistic/");'>
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Launch</button>
+                <button onclick='favoriteScript(this);'><i class="fa-solid fa-heart grayed"></i>
+                    <t>Favorite</t>
+                </button>
+            </div>
+
+            <div id="gamecard-4" class="game-card"
+                style="background-image: url('https://president-of-the-math-team.com/img/run3titlecard.png')">
+                <p>Run 3</p>
+                <button onclick='updateURL("https://fulscreenmario.github.io/originrun/tn6pS9dCf37xAhkJv/");'><i
+                        class="fa-solid fa-arrow-up-right-from-square"></i> Launch</button>
+                <button onclick='favoriteScript(this);'><i class="fa-solid fa-heart grayed"></i>
+                    <t>Favorite</t>
+                </button>
+            </div>
+
+            <div id="gamecard-5" class="game-card"
+                style="background-image: url('https://president-of-the-math-team.com/img/slopetitlecard.png')">
+                <p>Slope</p>
+                <button onclick='updateURL("https://theslope.github.io/games/slope/index.html");'><i
+                        class="fa-solid fa-arrow-up-right-from-square"></i> Launch</button>
+                <button onclick='favoriteScript(this);'><i class="fa-solid fa-heart grayed"></i>
+                    <t>Favorite</t>
+                </button>
+            </div>
+
+            <div id="gamecard-6" class="game-card"
+                style="background-image: url('https://president-of-the-math-team.com/img/subwaysurferstitlecard.png')">
+                <p>Subway<br>Surfers</p>
+                <button onclick="updateURL('https://coolubg.github.io/coolubg-list/subway-surfers/')"><i
+                        class="fa-solid fa-arrow-up-right-from-square"></i> Launch</button>
+                <button onclick='favoriteScript(this);'><i class="fa-solid fa-heart grayed"></i>
+                    <t>Favorite</t>
+                </button>
+            </div>
+
+            <div id="gamecard-7" class="game-card"
+                style="background-image: url('https://president-of-the-math-team.com/img/sandtristitlecard.png')">
+                <p>Sandtris</p>
+                <button onclick="updateURL('https://sandtris.com/')"><i
+                        class="fa-solid fa-arrow-up-right-from-square"></i>
+                    Launch</button>
+                <button onclick='favoriteScript(this);'><i class="fa-solid fa-heart grayed"></i>
+                    <t>Favorite</t>
+                </button>
+            </div>
+
+            <div id="gamecard-8" class="game-card"
+                style="background-image: url('https://president-of-the-math-team.com/img/bitlifetitlecard.png')">
+                <p>Bitlife</p>
+                <button onclick="updateURL('https://xlegends.github.io/bitlife/')"><i
+                        class="fa-solid fa-arrow-up-right-from-square"></i> Launch</button>
+                <button onclick='favoriteScript(this);'><i class="fa-solid fa-heart grayed"></i>
+                    <t>Favorite</t>
+                </button>
+            </div>
+
+            <div id="gamecard-9" class="game-card"
+                style="background-image: url('https://president-of-the-math-team.com/img/stickmantitlecard.png')">
+                <p>Stickman<br>Hook</p>
+                <button onclick="updateURL('https://mountain-658.github.io/g/stickmanhook/index.html')">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Launch</button>
+                <button onclick='favoriteScript(this);'><i class="fa-solid fa-heart grayed"></i>
+                    <t>Favorite</t>
+                </button>
+            </div>
+
+            <div id="gamecard-10" class="game-card"
+                style="background-image: url('https://president-of-the-math-team.com/img/castletitlecard.png')">
+                <p>Castle<br>Wolfen-<br>stein</p>
+                <button onclick="updateURL('https://archive.org/details/Castle_Wolfenstein_1981_Muse')">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Launch</button>
+                <button onclick='favoriteScript(this);'>
+                    <i class="fa-solid fa-heart grayed"></i>
+                    <t>Favorite</t>
+                </button>
+            </div>
+
+            <div id="gamecard-11" class="game-card"
+                style="background-image: url('https://president-of-the-math-team.com/img/tinyfishingtitlecard.png')">
+                <p>Tiny<br>Fishing</p>
+                <button onclick="alert('This game may not save your progress! I can\'t seem to find a fix at the moment, sadly.');
+                     updateURL('https://webglmath.github.io/tiny-fishing/');">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Launch</button>
+                <button onclick='favoriteScript(this);'>
+                    <i class="fa-solid fa-heart grayed"></i>
+                    <t>Favorite</t>
+                </button>
+            </div>
+
+            <div id="gamecard-12" class="game-card"
+                style="background-image: url('https://president-of-the-math-team.com/img/chromedinotitlecard.png')">
+                <p>Chrome<br>Dino<br>Game</p>
+                <button onclick="updateURL('https://www.tuckercraig.com/dino/');">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Launch</button>
+                <button onclick='favoriteScript(this);'>
+                    <i class="fa-solid fa-heart grayed"></i>
+                    <t>Favorite</t>
+                </button>
+            </div>
+
+            <div id="gamecard-13" class="game-card"
+                style="background-image: url('https://president-of-the-math-team.com/img/fireboytitlecard.png')">
+                <p>Fireboy<br>and<br>Watergirl</p>
+                <button onclick="updateURL('https://ubg100.github.io/games/fbwg1/index.html');">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Launch</button>
+                <button onclick='favoriteScript(this);'>
+                    <i class="fa-solid fa-heart grayed"></i>
+                    <t>Favorite</t>
+                </button>
+            </div>
+
+            <div id="gamecard-14" class="game-card"
+                style="background-image: url('https://president-of-the-math-team.com/img/retrobowltitlecard.png')">
+                <p>Retro<br>Bowl</p>
+                <button onclick="updateURL('https://re-trobowl.github.io/file/');">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Launch</button>
+                <button onclick='favoriteScript(this);'>
+                    <i class="fa-solid fa-heart grayed"></i>
+                    <t>Favorite</t>
+                </button>
+            </div>
+
+            <div id="gamecard-15" class="game-card"
+                style="background-image: url('https://president-of-the-math-team.com/img/retrohighwaytitlecard.png')">
+                <p>Retro<br>Highway</p>
+                <button onclick="updateURL('https://education76.github.io/g177/retro-highway/');">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Launch</button>
+                <button onclick='favoriteScript(this);'>
+                    <i class="fa-solid fa-heart grayed"></i>
+                    <t>Favorite</t>
+                </button>
+            </div>
+
+            <div id="gamecard-16" class="game-card"
+                style="background-image: url('https://president-of-the-math-team.com/img/minecrafttitlecard.png')">
+                <p>Minecraft<br>1.5</p>
+                <button onclick="alert('Singleplayer WILL take a while to load! Please leave the tab open, it should work eventually!\n\nMost multiplayer servers don\'t work, but you can check if you like!');
+                     updateURL('https://sd592g.github.io/zj684od4lfg/');">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Launch</button>
+                <button onclick='favoriteScript(this);'>
+                    <i class="fa-solid fa-heart grayed"></i>
+                    <t>Favorite</t>
+                </button>
+            </div>
+
+            <div id="gamecard-17" class="game-card"
+                style="background-image: url('https://president-of-the-math-team.com/img/cookietitlecard.png')">
+                <p>Cookie<br>Clicker</p>
+                <button onclick="updateURL('https://the.deconstructors.co.uk/tmm-cookieclicker/');">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Launch</button>
+                <button onclick='favoriteScript(this);'>
+                    <i class="fa-solid fa-heart grayed"></i>
+                    <t>Favorite</t>
+                </button>
+            </div>
+
+            <div id="gamecard-18" class="game-card"
+                style="background-image: url('https://president-of-the-math-team.com/img/bloxorztitlecard.png')">
+                <p>Bloxorz</p>
+                <button onclick="updateURL('https://education76.github.io/g/bloxorz/');">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Launch</button>
+                <button onclick='favoriteScript(this);'>
+                    <i class="fa-solid fa-heart grayed"></i>
+                    <t>Favorite</t>
+                </button>
+            </div>
+
+            <div id="gamecard-19" class="game-card"
+                style="background-image: url('https://president-of-the-math-team.com/img/papaspizzatitlecard.png')">
+                <p>Papa's<br>Pizza</p>
+                <button onclick="updateURL('https://archive.org/details/flash_papaspizzeria#');">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Launch</button>
+                <button onclick='favoriteScript(this);'>
+                    <i class="fa-solid fa-heart grayed"></i>
+                    <t>Favorite</t>
+                </button>
+            </div>
+
+            <div id="gamecard-20" class="game-card"
+                style="background-image: url('https://president-of-the-math-team.com/img/talliotitlecard.png')">
+                <p>Tall.io</p>
+                <button onclick="updateURL('https://1001unblockedgames.github.io/TallIO/');">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Launch</button>
+                <button onclick='favoriteScript(this);'>
+                    <i class="fa-solid fa-heart grayed"></i>
+                    <t>Favorite</t>
+                </button>
+            </div>
+
+            <div id="gamecard-21" class="game-card"
+                style="background-image: url('https://president-of-the-math-team.com/img/crossyroadtitlecard.png')">
+                <p>Crossy<br>Road</p>
+                <button onclick="updateURL('https://slope-game.github.io/rungame/crossy-road/?world=original');">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Launch</button>
+                <button onclick='favoriteScript(this);'>
+                    <i class="fa-solid fa-heart grayed"></i>
+                    <t>Favorite</t>
+                </button>
+            </div>
+
+            <div id="gamecard-22" class="game-card"
+                style="background-image: url('https://president-of-the-math-team.com/img/monkeymarttitlecard.png')">
+                <p>Monkey<br>Mart</p>
+                <button onclick="updateURL('https://subkeys.github.io/monk/file/');">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Launch</button>
+                <button onclick='favoriteScript(this);'>
+                    <i class="fa-solid fa-heart grayed"></i>
+                    <t>Favorite</t>
+                </button>
+            </div>
+
+            <div id="gamecard-23" class="game-card"
+                style="background-image: url('https://president-of-the-math-team.com/img/driftbosstitlecard.png')">
+                <p>Drift<br>Boss</p>
+                <button onclick="updateURL('https://unblockedgamesfree.github.io/drift-boss/');">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Launch</button>
+                <button onclick='favoriteScript(this);'>
+                    <i class="fa-solid fa-heart grayed"></i>
+                    <t>Favorite</t>
+                </button>
+            </div>
+
+            <div id="gamecard-24" class="game-card"
+                style="background-image: url('https://president-of-the-math-team.com/img/drivemadtitlecard.png')">
+                <p>Drive<br>Mad</p>
+                <button onclick="updateURL('https://ubg77.github.io/game131022/drive-mad/');">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Launch</button>
+                <button onclick='favoriteScript(this);'>
+                    <i class="fa-solid fa-heart grayed"></i>
+                    <t>Favorite</t>
+                </button>
+            </div>
+
+            <div id="gamecard-997" class="game-card"
+                style="background-image: url('https://president-of-the-math-team.com/img/yalogamestitlecard.png')">
+                <p>2, 3 & 4<br>Player<br>Games</p>
+                <button onclick="updateURL('https://hva2021.github.io/2-3-4-player-games/index.html');">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Launch</button>
+                <button onclick='favoriteScript(this);'>
+                    <i class="fa-solid fa-heart grayed"></i>
+                    <t>Favorite</t>
+                </button>
+            </div>
+
+            <div id="gamecard-998" class="game-card"
+                style="background-image: url('https://president-of-the-math-team.com/img/yalogamestitlecard.png')">
+                <p>More<br>Games<br><b>SITE A</b><i><br>May be<br>glitchier, not<br>fully supported</i></p>
+                <button onclick="updateURL('https://yalogames.github.io/');">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i> Launch</button>
+                <button onclick='favoriteScript(this);'>
+                    <i class="fa-solid fa-heart grayed"></i>
+                    <t>Favorite</t>
+                </button>
+            </div>
+
+            <div id="gamecard-999" class="game-card"
+                style="background-image: url('https://president-of-the-math-team.com/img/yalogamestitlecard.png')">
+                <p>More<br>Games<br><b>SITE B</b><i><br>May be<br>glitchier, not<br>fully supported</i></p>
+                <button onclick="updateURL('https://ubg98.github.io');">
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                    Launch</button>
+                <button onclick='favoriteScript(this);'>
+                    <i class="fa-solid fa-heart grayed"></i>
+                    <t>Favorite</t>
+                </button>
+            </div>
+
+        </div>
+        <p>Want another game? Suggest it <a href="https://forms.gle/Cw16KPVqNniCWNhW9" target="_blank">here</a>!</p>
+    </div>
+
+
+    <script>
+
+        function checkLauncherVersion() {
+            fetch("https://president-of-the-math-team.com/versions.json", { cache: "no-store" }).then(responce => {
+                responce.json().then(data => {
+                    document.getElementById("launcherVersion").remove();
+                    var currentVersion = "v" + location.hash.replace("#v", "").split("").join(".");
+                    var latestVersion = "v" + data.launcher;
+                    console.log("${currentVersion} vs. ${latestVersion}");
+                    if (currentVersion == latestVersion) {
+                        message = "launcher version " + currentVersion + " (up to date)";
+                    } else {
+                        message = "launcher version " + currentVersion + " (<a href=\"https://docs.google.com/document/d/1v9ajotmNecet5XaoecaiNxgn7PdGwP2_-oWqww-sUcU/edit?tab=t.0\">download v" + latestVersion + " here</a>)";
+                    }
+                    document.getElementById("version").innerHTML = document.getElementById("version").innerHTML + message;
+                })
+            });
+        }
+
+        function updateURL(url) {
+            if (document.getElementById('menutext') != null) {
+                setTimeout(() => {
+                    document.getElementById('menu').classList.remove('enlarged');
+                    document.getElementById('menutext').remove();
+                }, 3000);
+                setTimeout(() => {
+                    document.getElementById('menutext').style.opacity = '0';
+                    document.getElementById('menutext').getElementsByTagName('h1')[0].style.fontSize = '0px';
+                }, 2000);
+                document.getElementById('game-selector').style.display = 'none';
+                document.getElementById('returnToGame').style.display = 'block';
+            } else {
+                document.getElementById('grayTransition').style.display = 'block';
+                document.getElementById('returnToGame').style.display = 'none';
+                document.getElementById('game-selector').style.transform = 'scale(0)';
+                document.getElementById('game-selector').style.overflow = 'hidden';
+                setTimeout(() => {
+                    document.getElementById('grayTransition').style.opacity = '0';
+                }, 500);
+                setTimeout(() => {
+                    document.getElementById('game-selector').style.display = 'none';
+                    document.getElementById('grayTransition').style.display = 'none';
+                }, 1500);
+                setTimeout(() => {
+                    document.getElementById('returnToGame').style.display = 'block';
+                    document.getElementById('game-selector').style.transform = 'scale(100%)';
+                    document.getElementById('game-selector').style.overflow = 'auto';
+                    document.getElementById('grayTransition').style.opacity = '1';
+                }, 2000);
+            }
+            document.getElementById('menu').style.display = 'flex';
+            document.getElementById('game-embed').src = url;
+        }
+
+        var alertCounter = 3;
+
+        function favoriteScript(element) {
+            if(alertCounter > 0) {
+                alertCounter--;
+                alert("After changing your favorites, bookmark the page again or your changes will not be saved!\n\n" + alertCounter + "/3 reminders left");
+            }
+            console.log("Running Page Version of Favorite Script");
+            var icon = element.getElementsByTagName("i")[0];
+            var text = element.getElementsByTagName("t")[0];
+            var card = element.parentElement;
+            var cardNumber = card.id.replace("gamecard-", "");
+            var favoritesList = document.getElementById("favoritesList");
+            var gameList = document.getElementById("gameList");
+            var list = null;
+
+            if (icon.classList.contains("grayed")) {
+                icon.classList.remove("grayed");
+                icon.classList.add("favorited");
+                text.innerHTML = "Favorited";
+                list = favoritesList;
+
+                if (location.hash == "") {
+                    location.hash = "#favs=" + cardNumber;
+                } else {
+                    location.hash = location.hash + "," + cardNumber;
+                }
+
+            } else {
+
+                icon.classList.remove("favorited");
+                icon.classList.add("grayed");
+                text.innerHTML = "Favorite";
+                list = gameList;
+
+                var newHash = "#favs=";
+                var favArray = location.hash.replace("#favs=", "").split(",");
+                console.log(favArray);
+                favArray.forEach(favNum => {
+                    if (favNum != cardNumber) {
+                        newHash = newHash + "," + favNum;
+                    }
+                })
+
+                newHash = newHash.replace("#favs=,", "#favs=")
+
+                location.hash = newHash;
+
+            }
+
+            var newDisplay = "none";
+
+            if (list.children.length == 0) {
+                list.appendChild(card);
+                if (list == favoritesList) {
+                    document.getElementById("favorites").style.display = "";
+                } else {
+                    document.getElementById("generalheader").style.display = "";
+                }
+                return;
+            }
+
+            var insertElement = null;
+            var offset = cardNumber;
+            offset++;
+            console.log(offset);
+            while (insertElement == null) {
+                console.log("Trying " + offset)
+                var attempt = document.getElementById("gamecard-" + offset);
+                offset--;
+                if (attempt != null && attempt.parentElement == list) {
+                    console.log(cardNumber + " (card) compared to (offset) " + offset);
+                    insertElement = attempt;
+                    if (offset < cardNumber || offset == 0) {
+                        console.log("inserting after");
+                        insertElement.after(card);
+                    } else {
+                        console.log("inserting before");
+                        list.insertBefore(card, insertElement);
+                    }
+                }
+                if (offset < 0) {
+                    list.prepend(card);
+                    insertElement = true;
+                }
+            }
+
+            if (favoritesList.children.length == 0) {
+                document.getElementById("favorites").style.display = "none";
+                location.hash = "";
+            } else if (gameList.children.length == 0) {
+                document.getElementById("generalheader").style.display = "none";
+                var advancmentimg = document.getElementsByClassName("advancment-easteregg")[0];
+                advancmentimg.style.display = "";
+                setTimeout(() => {
+                    advancmentimg.style.width = "300px";
+                }, 250);
+                setTimeout(() => {
+                    advancmentimg.style.transform = "translate(0%, -100%)";
+                    advancmentimg.style.opacity = "0";
+                }, 10000);
+                setTimeout(() => {
+                    advancmentimg.remove();
+                }, 11000);
+            }
+
+        }
+
+    </script>
+
+
+    <script src="https://kit.fontawesome.com/7a44989741.js" crossorigin="anonymous"></script>
+</body>
+
+<!-- encryption link:    https://www.html-code-generator.com -->
+
+</html>

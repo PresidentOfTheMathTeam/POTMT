@@ -1,0 +1,180 @@
+<html>
+
+<head>
+
+    <title>POTMT</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+    <link id="icon" rel="icon" type="image/x-icon"
+        href="https://president-of-the-math-team.com/img/icon.png">
+
+
+    <style>
+
+        p,a,h1,h2,h3,h4,button,input {
+            color: white;
+            font-family: "Roboto", serif;
+            transition: .15s;
+        }
+
+        a:hover {
+            color: #95baff;
+        }
+
+        button {
+            padding: 18px;
+            background-color: #626976;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        button:hover {
+            transform: scale(1.1);
+            background: #7c828d;
+        }
+
+        #content {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #2D3748;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            z-index: 2;
+            transition: .75s;
+            transition-delay: .25s;
+            overflow: auto;
+            scroll-behavior: auto;
+        }
+
+        #content h1 {
+            transition: .75s;
+        }
+
+        #content div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .title-container {
+            width: 750px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .title-container input[type="text"] {
+            width: 400px;
+            padding: 18px;
+            color: black;
+            border-radius: 14px;
+            border: none;
+            opacity: .7;
+        }
+
+        .title-container input[type="text"]:not(:placeholder-shown) {
+            opacity: 1;
+        }
+
+        .title-container .updatebtn {
+            margin-left: 10px;
+            opacity: .7;
+            cursor: not-allowed;
+            width: max-content;
+        }
+
+        .title-container input[type="text"]:not(:placeholder-shown)+#titlebtn {
+            opacity: 1;
+            cursor: pointer;
+        }
+
+        .title-container input[type="text"]:not(:placeholder-shown)+#titlebtn:hover {
+            background-color: #7c828d;
+        }
+
+        .title-container .titlepreset {
+            margin: 0 5px;
+            display: flex;
+        }
+
+        .title-container .titlepreset:hover {
+            background-color: #7c828d;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <!-- Return to menu text -->
+
+    <div id="content">
+        <div>
+            <h1>Disguise your Tab</h1>
+            <p style="opacity:.8;margin-top:0;"><i>You will not be able to change this later without reloading the website!</i></p><br>
+            <span class="title-container">
+                <input type="text" id="titleinput" placeholder="Enter a new name for the tab">
+                <button class="updatebtn" id="titlebtn"
+                    onclick="if(document.getElementById('titleinput').value.length > 0){updateTitle(document.getElementById('titleinput').value, 'clear');}">Update</button>
+            </span>
+            <br>
+            <p>-- or use a preset (includes icon!) --</p>
+            <br>
+            <span class="title-container">
+                <button class="titlepreset"
+                    onclick="updateTitle('Home | Schoology', 'https://wellesleyps.org/fiske/wp-content/uploads/sites/4/2020/09/powerschool-P-logo-300x300.png');">Schoology</button>
+                <button class="titlepreset" onclick="updateTitle('New Tab', 'clear');">New Tab</button>
+                <button class="titlepreset"
+                    onclick="updateTitle('Google', 'https://cdn4.iconfinder.com/data/icons/new-google-logo-2015/400/new-google-favicon-512.png');">Google</button>
+                <button class="titlepreset"
+                    onclick="updateTitle('Home - Google Drive', 'https://assets.pipedream.net/s.v0/app_1lxhk1/logo/orig');">Google
+                    Drive</button>
+                    <button class="titlepreset"
+                    onclick="updateTitle('POTMT', 'https://president-of-the-math-team.com/img/icon.png');">POTMT (default)</button>
+            </span>
+            <br>
+            <button onclick="startSite();" style="font-size: 18px; margin-top: 16px;"><i class="fa-solid fa-arrow-up-right-from-square" style="margin-right:8px;"></i>Launch Unblocker</button>
+            <br>
+            <p>If the unblocker fails to launch, <a href="https://docs.google.com/presentation/d/e/2PACX-1vSUYA460VTB82hoKTiim2v0pPkKRV6hvxw8gN5EeHfc0LlBnLTfaMqgXa-leteQtmzl48E2rESDgVWG/pub?start=false&loop=false&delayms=3000">click here to download the backup version</a></p>
+        </div>
+    </div>
+
+</body>
+
+<script>
+    
+    location.hash = "v300"
+
+    function startSite() {
+        fetch("https://president-of-the-math-team.com/latestrelease.txt", {   method: 'GET'   }).then(response => response.text()).then(data => {
+            document.write(unescape(data));
+        });
+    }
+
+    function updateTitle(newTitle, favicon) {
+        
+        if(newTitle == null) {
+            return;
+        } else if (newTitle.replaceAll(" ", "") == "") {
+            alert("Please enter a vaild title! Titles cannot be blank!");
+            return updateTitle(prompt('Open the full menu to use presets!\n\nEnter a new name for the tab:'), 'clear');
+        }
+
+        document.title = newTitle;
+        document.getElementById("icon").href = favicon;
+
+    }
+    
+</script>    
+
+<script src="https://kit.fontawesome.com/7a44989741.js" crossorigin="anonymous"></script>

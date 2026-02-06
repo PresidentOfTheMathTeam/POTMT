@@ -615,14 +615,16 @@
             "url": "https://csa.potmt.online/",
             "image": "",
             "description": "Calculate your class final grades!",
-            "fixedDate": "2025-12-16"
+            "fixedDate": "2025-12-16",
+            "hidden": true
         },
         {
             "id": 99,
             "name": "Retro Games",
             "url": "https://www.retrogames.cz/play_771-NES.php",
             "image": "retrogamestitlecard.png",
-            "releaseDate": "2025-12-16"
+            "releaseDate": "2025-12-16",
+            "hidden": true
         },
         {
             "id": 100,

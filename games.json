@@ -433,7 +433,7 @@
             "name": "Cookie Clicker",
             "url": "https://games.president-of-the-math-team.com/cookieclicker/",
             "image": "cookietitlecard.png",
-            "alert": "Please export your save from the previous version (Options --> Export Save) and import it into this (updated) one! The old one is getting removed soon!"
+            "hidden": true
         },
         {
             "id": 71,
@@ -469,7 +469,8 @@
             "id": 76,
             "name": "Google Doodles",
             "url": "https://games.president-of-the-math-team.com/google-doodles/",
-            "image": "googledoodletitlecard.png"
+            "image": "googledoodletitlecard.png",
+            "hidden": true
         },
         {
             "id": 77,
@@ -529,8 +530,9 @@
         {
             "id": 86,
             "name": "Big Flappy Tower Tiny Square",
-            "url": "https://strongdogxp.github.io/strongdog3/html/big%20flappy%20tower%20tiny%20square/game/index.html",
-            "image": "bfttstitlecard.png"
+            "url": "https://ubg98.github.io/BigTowerTinySquare/",
+            "image": "bfttstitlecard.png",
+            "fixedDate": "2026-02-05"
         },
         {
             "id": 87,
@@ -651,8 +653,14 @@
             "id": 106,
             "name": "Tunel Rush",
             "url": "https://tunnelrush-game.github.io/embed/tunnel-rush.html",
-            "image": "ovotitlecard.png",
             "releaseDate": "2026-01-05"
+        },
+        {
+            "id": 109,
+            "name": "Boxing Random",
+            "url": "https://ubg98.github.io/BoxingRandom/",
+            "image": "boxingrandomtitlecard.png",
+            "releaseDate": "2026-02-05"
         }
     ],
     "version": "1.0.3"

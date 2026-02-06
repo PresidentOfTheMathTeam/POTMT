@@ -2,7 +2,7 @@
 
 <head>
 
-    <title>Download | POTMT</title>
+    <title>Backup | POTMT</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,30 +13,6 @@
 
 
     <style>
-
-        p,
-        a,
-        h1,
-        h2,
-        h3,
-        h4,
-        button,
-        input {
-            color: white;
-            font-family: "Roboto", serif;
-            transition: .15s;
-        }
-
-        button {
-            padding: 18px;
-            background-color: #626976;
-            border: none;
-            border-radius: 14px;
-            cursor: pointer;
-            text-align: center;
-            font-size: 18px;
-        }
-
         #content {
             width: 100%;
             height: 100%;
@@ -53,8 +29,23 @@
             transition-delay: .25s;
         }
 
-        #content h1 {
-            transition: .75s;
+        #content a {
+            transition: .15s;
+            color: white;
+            font-family: "Roboto", serif;
+            font-size: 28px;
+            text-decoration: none;
+            background-color: #111B2D;
+            padding: 1em 1.25em;
+            border-radius: 16px;
+        }
+        
+        #content i {
+            margin: 0 .25em;
+        }
+
+        #content a:hover {
+            transform: scale(105%);
         }
 
         #content div {
@@ -62,15 +53,6 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-        }
-
-        button:hover {
-            transform: scale(1.1);
-            background: #7c828d;
-        }
-
-        a:hover {
-            color: #95baff;
         }
     </style>
 
@@ -82,14 +64,12 @@
 
     <div id="content">
         <div>
-            <h1>Click <a href="v252.html" download="POTMT_backup252.html">here</a> to to download the backup version!</h1>
-            <p style="opacity:.8;"><i>Only use this version if the <a href="https://president-of-the-math-team.com/">main version</a> is broken/not working.</i></p><br>
-            <button onclick="window.open('https://docs.google.com/document/d/1v9ajotmNecet5XaoecaiNxgn7PdGwP2_-oWqww-sUcU/edit?usp=sharing');">Support Google Doc</button>
+            <a href="launcher/backup.html" download="POTMT-BACKUP-V303.html"><i class="fa-solid fa-file-arrow-down"></i> Download Backup Version</a>
         </div>
     </div>
 
-</body>
+    <script src="https://kit.fontawesome.com/7a44989741.js" crossorigin="anonymous"></script>
 
-<!-- encryption link:    https://www.html-code-generator.com -->
+</body>
 
 </html>

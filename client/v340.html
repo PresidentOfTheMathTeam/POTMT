@@ -1,0 +1,796 @@
+<html>
+
+<head>
+
+
+    <title>New Tab</title>
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
+
+
+    <style>
+        @keyframes glowingborder {
+            0% {
+                border-color: blue;
+            }
+
+            50% {
+                border-color: #1282DF;
+            }
+
+            100% {
+                border-color: blue;
+            }
+        }
+
+        @keyframes rotatebounce {
+            0% {
+                transform: rotate(2.5deg);
+            }
+
+            50% {
+                transform: rotate(-2.5deg);
+            }
+
+            100% {
+                transform: rotate(2.5deg);
+            }
+        }
+
+        #grayTransition {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: #2D3748;
+            transition: 1s;
+            z-index: 9;
+            display: none;
+        }
+
+        .title-container {
+            width: 500px;
+        }
+
+        .title-container input[type="text"] {
+            width: 400px;
+            padding: 18px;
+            color: black;
+            border-radius: 14px;
+            border: none;
+            opacity: .7;
+        }
+
+        .title-container input[type="text"]:not(:placeholder-shown) {
+            opacity: 1;
+        }
+
+        .title-container .updatebtn {
+            margin-left: 10px;
+            opacity: .7;
+            cursor: not-allowed;
+            width: 80px;
+        }
+
+        .title-container input[type="text"]:not(:placeholder-shown)+#titlebtn {
+            opacity: 1;
+            cursor: pointer;
+        }
+
+        .title-container input[type="text"]:not(:placeholder-shown)+#titlebtn:hover {
+            background-color: #7c828d;
+        }
+
+        .title-container .titlepreset {
+            margin: 0 5px;
+        }
+
+        .title-container .titlepreset:hover {
+            background-color: #7c828d;
+        }
+
+        #game-selector {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #2D3748;
+            text-align: center;
+            scroll-behavior: auto;
+            overflow: auto;
+            transition: transform .75s, visibility 0s;
+            z-index: 10;
+            visibility: visible;
+        }
+
+        p,
+        a,
+        h1,
+        h2,
+        h3,
+        h4,
+        button,
+        input {
+            color: white;
+            font-family: "Roboto", serif;
+        }
+
+        button {
+            padding: 18px;
+            background-color: #626976;
+            border: none;
+            border-radius: 14px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        #game-selector h1 {
+            font-weight: 900;
+            font-size: 36px;
+        }
+
+        .game-list {
+            padding: 20px 40px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .game-card {
+            width: 136px;
+            height: 200px;
+            background-repeat: no-repeat;
+            background-size: 100%;
+            border-radius: 14px;
+            box-shadow: 0px;
+            border: 8px #626976 solid;
+            transition: .1s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            float: left;
+            margin: 20px;
+            user-select: none;
+        }
+
+        .game-card:hover {
+            transform: scale(110%);
+            box-shadow: 0 0 20px 8px rgba(255, 255, 255, 0.63);
+            border-color: white;
+            transition: .2s ease-out;
+        }
+
+        .game-card p {
+            text-align: center;
+            font-size: 28px;
+            margin: 8px 0;
+            font-weight: 800;
+        }
+
+        .game-card p i,
+        .game-card p b {
+            font-size: 14px;
+        }
+
+        .game-card:hover p {
+            font-size: 22px;
+            animation: rotatebounce infinite 1s linear;
+        }
+
+        .game-card:hover p i {
+            display: none;
+        }
+
+        .game-card:hover p b {
+            transition: .2s;
+            font-size: 16px;
+        }
+
+        .game-card button {
+            position: absolute;
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(0%);
+            padding: 12px 0px;
+            border-radius: 8px;
+            width: 100px;
+            margin: 4px 0;
+            background-color: #D3DBE6;
+            color: #0D0745;
+        }
+
+        .game-card button i {
+            margin-right: 5px;
+            color: #0D0745;
+            cursor: pointer;
+        }
+
+        .game-card:hover button {
+            position: static;
+            opacity: 1;
+            visibility: visible;
+            transform: scale(100%);
+            transition: opacity 0.3s ease, transform 0.3s cubic-bezier(.59, 0, .44, 1.4), visibility 0.3s ease;
+        }
+
+        .game-card button i.grayed {
+            color: #7d7d7d;
+        }
+
+        .game-card button i.favorited {
+            color: #FF0035;
+        }
+
+        .game-card button:hover {
+            transform: scale(110%);
+            transition: .15s;
+        }
+
+        #game-embed {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .menu-bottom-right {
+            border-top-left-radius: 18px;
+            border: solid white 5px;
+            border-bottom-width: 0;
+            border-right-width: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        .menu-bottom-left {
+            border-top-right-radius: 18px;
+            border: solid white 5px;
+            border-bottom-width: 0;
+            border-left-width: 0;
+            left: 0;
+            bottom: 0;
+        }
+
+        .menu-top-left {
+            border-bottom-right-radius: 18px;
+            border: solid white 5px;
+            border-top-width: 0;
+            border-left-width: 0;
+            left: 0;
+            top: 0;
+        }
+
+        .menu-top-right {
+            border-bottom-left-radius: 18px;
+            border: solid white 5px;
+            border-top-width: 0;
+            border-right-width: 0;
+            right: 0;
+            top: 0;
+        }
+
+        #menu {
+            position: fixed;
+            background-color: #2D3748;
+            z-index: 5;
+            width: 50px;
+            height: 50px;
+            transition: .5s, display 0s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #menu .options {
+            display: none;
+            transform: rotate(-180deg);
+            opacity: 0;
+            transition: .5s;
+        }
+
+        #menu p {
+            font-size: 36px;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        #menu.enlarged {
+            transform: scale(400%) translate(-20px, -20px);
+            animation: glowingborder infinite .5s linear;
+            cursor: default;
+        }
+
+        #menu:hover {
+            height: auto;
+            display: block;
+            width: auto;
+        }
+
+        #menu.enlarged:hover {
+            opacity: 1;
+            width: 50px;
+            height: 50px;
+        }
+
+        #menu:hover .options {
+            display: block;
+            opacity: 1;
+            transform: rotate(0deg);
+            overflow: hidden;
+            padding: 10px 25px;
+        }
+
+        #menu.enlarged:hover .options {
+            display: none;
+        }
+
+        #menu:hover .options p {
+            font-size: 24px;
+            margin: 4px 0;
+            cursor: pointer;
+            transition: .25s;
+            opacity: .8;
+        }
+
+        #menu-right p {
+            text-align: right;
+        }
+
+        #menu-left p {
+            text-align: left;
+        }
+
+        #menu:hover .options p i {
+            margin-left: 5px;
+        }
+
+        #menu:hover .options p:hover {
+            font-weight: 600;
+            opacity: 1;
+        }
+
+        #menu:hover .expand {
+            display: none;
+        }
+
+        #menu.enlarged:hover .expand {
+            display: block;
+        }
+
+        #menutext {
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #2D3748;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            z-index: 2;
+            transition: .75s;
+            transition-delay: .25s;
+        }
+
+        #menutext h1 {
+            transition: .75s;
+        }
+
+        #version,
+        #changelog {
+            transition: .25s;
+        }
+
+        #returnToGame {
+            display: none;
+        }
+
+        #returnToGame button {
+            margin: 20px 0 10px 0;
+            font-size: 20px;
+            padding: 24px;
+            border: white solid 4px;
+            background: none;
+            opacity: .8;
+            font-weight: 400;
+        }
+
+        #returnToGame button:hover {
+            opacity: 1;
+            font-weight: 600;
+        }
+
+        .fa-solid {
+            color: white;
+        }
+
+        .advancment-easteregg {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 800px;
+            z-index: 99999999;
+            transition: .5s;
+        }
+
+        #change-position {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 300px;
+            background: #2D3748;
+            border: solid white 5px;
+            border-radius: 18px;
+            text-align: center;
+            scroll-behavior: auto;
+            overflow: auto;
+            transition: transform .75s, visibility 0s;
+            z-index: 10;
+            transform: translate(-50%, -50%);
+            display: none;
+        }
+
+        .position-editor-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: 10px;
+            width: 270px;
+            margin-left: 15px;
+        }
+
+        .position-editor-container button {
+            padding: 14px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .position-editor-container button:hover {
+            background-color: #7c828d;
+        }
+
+        .position-close-btn {
+            margin: 20px 0 21.440px 0;
+            font-size: 16px;
+            padding: 14px;
+            border: white solid 4px;
+            background: none;
+            opacity: .8;
+            font-weight: 400;
+            width: 150px;
+        }
+
+        .position-close-btn:hover {
+            opacity: 1;
+            font-weight: 600;
+        }
+
+        .weeklyupdateletterbox {
+            height: 90px;
+            margin-top: 12px;
+            border-radius: 14px;
+            cursor: pointer;
+        }
+
+        .weeklyupdateletterbox:hover {
+            transform: scale(102%);
+            transition: .2s;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <img src="https://president-of-the-math-team.com/img/HowDidWeGetHere.png" style="display: none;"
+        class="advancment-easteregg" />
+
+    <!-- Return to Menu Button -->
+
+    <div id="menu" style="display:none;" class="enlarged menu-bottom-right">
+        <p class="expand">&equiv;</p>
+        <div id="menu-right" class="options">
+            <p onclick="document.getElementById('game-embed').src = document.getElementById('game-embed').src">Reset
+                Game <i class="fa-solid fa-rotate-right"></i></p>
+            <p onclick="document.getElementById('change-position').style.display = 'block';document.getElementById('menu').style.display='none';positionOpen = true;">Change Position <i
+                    class="fa-solid fa-sliders"></i></p>
+            <p onclick="document.getElementById('game-selector').style.display = 'block';">Full Menu <i
+                    class="fa-solid fa-up-right-and-down-left-from-center"></i></p>
+        </div>
+        <div id="menu-left" class="options" style="display: none;">
+            <p onclick="document.getElementById('game-embed').src = document.getElementById('game-embed').src"><i class="fa-solid fa-rotate-right"></i> Reset
+                Game</p>
+            <p onclick="document.getElementById('change-position').style.display = 'block';document.getElementById('menu').style.display='none';positionOpen = true;"><i
+                class="fa-solid fa-sliders"></i> Change Position</p>
+            <p onclick="document.getElementById('game-selector').style.display = 'block';"><i
+                class="fa-solid fa-up-right-and-down-left-from-center"></i> Full Menu</p>
+        </div>
+    </div>
+
+    <div id="change-position">
+        <h1>Change Menu Position</h1>
+        <div class="position-editor-container">
+            <button onmouseover="addMenuClass('menu-top-left')" onmouseout="removeMenuClass('menu-top-left')"
+                onclick="setMenuClass('menu-top-left')">
+                Top Left
+            </button>
+            <button onmouseover="addMenuClass('menu-top-right')" onmouseout="removeMenuClass('menu-top-right')"
+                onclick="setMenuClass('menu-top-right')">
+                Top Right
+            </button>
+            <button onmouseover="addMenuClass('menu-bottom-left')" onmouseout="removeMenuClass('menu-bottom-left')"
+                onclick="setMenuClass('menu-bottom-left')">
+                Bottom Left
+            </button>
+            <button onmouseover="addMenuClass('menu-bottom-right')" onmouseout="removeMenuClass('menu-bottom-right')"
+                onclick="setMenuClass('menu-bottom-right')">
+                Bottom Right
+            </button>
+        </div>
+        <button class="position-close-btn" onclick='document.getElementById("change-position").style.display = "none";menu.style.display = "";positionOpen = false;'>&#x2715; Close</button>
+    </div>
+
+    <!-- Return to menu text -->
+
+    <div id="menutext">
+        <h1>Use the button on the bottom right to return to the menu!</h1>
+    </div>
+
+    <!-- Game Embed -->
+
+    <iframe id="game-embed" src="about:blank" frameborder="0"></iframe>
+
+    <!-- Main Page -->
+
+    <div id="grayTransition"></div>
+
+    <div id="game-selector">
+
+        <h1>POTMT Unblocker</h1>
+        <p><i id="version">client version v3.4.0 - launcher version IfYouSeeThisPleaseReportThisAsABugInTheGoogleFormWithThe-ID1 - games version IfYouSeeThisPleaseReportThisAsABugInTheGoogleFormWithThe-ID2
+                <br></br><a target="_blank"
+                    href="https://docs.google.com/document/d/1v9ajotmNecet5XaoecaiNxgn7PdGwP2_-oWqww-sUcU/edit?usp=sharing">Get
+                    Support, Report a Bug, or Suggest a Game Here!</a></i>
+        </p>
+
+        <img id="weeklyUpdate" src="https://president-of-the-math-team.com/weeklyupdate/3-27-25.jpg" height="90" class="weeklyupdateletterbox" onclick="updateURL('https://president-of-the-math-team.com/weeklyupdate');" style="display: none;"/>
+
+        <div id="returnToGame">
+            <button onclick="document.getElementById('game-selector').style.display = 'none';">&#x2715; Close
+                Menu/Return to Game</button>
+        </div>
+
+        <div id="favorites" style="display:none;">
+            <h2 style="margin-top: 48px; margin-bottom:0px;">Favorites</h2>
+            <div class="game-list" id="favoritesList"></div>
+        </div>
+
+        <div id="generalheader">
+            <h2 style="margin-top: 28px;">Select a Game</h2>
+            <span class="title-container">
+                <input type="text" id="urlinput" placeholder="Or type an URL here ( ex. 'https://example.com' )">
+                <button class="updatebtn" id="titlebtn"
+                    onclick="updateURL(document.getElementById('urlinput').value, true);">Go</button>
+            </span>
+        </div>
+
+        <div class="game-list" id="gameList"></div>
+        <p>Want another game? Suggest it <a href="https://forms.gle/Cw16KPVqNniCWNhW9" target="_blank">here</a>!</p>
+    </div>
+
+
+    <script>
+
+        function updateURL(url, isCustom) {
+            console.log(`Updating URL to ${url}, isCustom: ${isCustom}`);
+            if (isCustom) {
+                if (url=="potmt.vreport") {
+                    var message = `Games Version: ${gamesVersion}`;
+                    console.log(message);
+                    document.write(message);
+                }
+                if (!url.includes("http")) {
+                    url = "https://" + url;
+                }
+            }
+            if (document.getElementById('menutext') != null) {
+                setTimeout(() => {
+                    document.getElementById('menu').classList.remove('enlarged');
+                    document.getElementById('menutext').remove();
+                }, 3000);
+                setTimeout(() => {
+                    document.getElementById('menutext').style.opacity = '0';
+                    document.getElementById('menutext').getElementsByTagName('h1')[0].style.fontSize = '0px';
+                }, 2000);
+                document.getElementById('game-selector').style.display = 'none';
+                document.getElementById('returnToGame').style.display = 'block';
+            } else {
+                document.getElementById('grayTransition').style.display = 'block';
+                document.getElementById('returnToGame').style.display = 'none';
+                document.getElementById('game-selector').style.transform = 'scale(0)';
+                document.getElementById('game-selector').style.overflow = 'hidden';
+                setTimeout(() => {
+                    document.getElementById('grayTransition').style.opacity = '0';
+                }, 500);
+                setTimeout(() => {
+                    document.getElementById('game-selector').style.display = 'none';
+                    document.getElementById('grayTransition').style.display = 'none';
+                }, 1500);
+                setTimeout(() => {
+                    document.getElementById('returnToGame').style.display = 'block';
+                    document.getElementById('game-selector').style.transform = 'scale(100%)';
+                    document.getElementById('game-selector').style.overflow = 'auto';
+                    document.getElementById('grayTransition').style.opacity = '1';
+                }, 2000);
+            }
+            document.getElementById('menu').style.display = 'flex';
+            document.getElementById('game-embed').src = url;
+        }
+
+        var alertCounter = 3;
+
+        function favoriteScript(element) {
+            if (alertCounter > 0) {
+                alertCounter--;
+                alert("After changing your favorites, bookmark the page again or your changes will not be saved!\n\n" + alertCounter + "/3 reminders left");
+            }
+            console.log("Running Page Version of Favorite Script");
+            var icon = element.getElementsByTagName("i")[0];
+            var text = element.getElementsByTagName("t")[0];
+            var card = element.parentElement;
+            var cardNumber = card.id.replace("gamecard-", "");
+            var favoritesList = document.getElementById("favoritesList");
+            var gameList = document.getElementById("gameList");
+            var list = null;
+
+            if (icon.classList.contains("grayed")) {
+                icon.classList.remove("grayed");
+                icon.classList.add("favorited");
+                text.innerHTML = "Favorited";
+                list = favoritesList;
+
+                if (location.hash == "") {
+                    location.hash = "#favs=" + cardNumber;
+                } else {
+                    location.hash = location.hash + "," + cardNumber;
+                }
+
+            } else {
+
+                icon.classList.remove("favorited");
+                icon.classList.add("grayed");
+                text.innerHTML = "Favorite";
+                list = gameList;
+
+                var newHash = "#favs=";
+                var favArray = location.hash.replace("#favs=", "").split(",");
+                console.log(favArray);
+                favArray.forEach(favNum => {
+                    if (favNum != cardNumber) {
+                        newHash = newHash + "," + favNum;
+                    }
+                })
+
+                newHash = newHash.replace("#favs=,", "#favs=")
+
+                location.hash = newHash;
+
+            }
+
+            var newDisplay = "none";
+
+            if (list.children.length == 0) {
+                list.appendChild(card);
+                if (list == favoritesList) {
+                    document.getElementById("favorites").style.display = "";
+                } else {
+                    document.getElementById("generalheader").style.display = "";
+                }
+                return;
+            }
+
+            var insertElement = null;
+            var offset = cardNumber;
+            offset++;
+            console.log(offset);
+            while (insertElement == null) {
+                console.log("Trying " + offset)
+                var attempt = document.getElementById("gamecard-" + offset);
+                offset--;
+                if (attempt != null && attempt.parentElement == list) {
+                    console.log(cardNumber + " (card) compared to (offset) " + offset);
+                    insertElement = attempt;
+                    if (offset < cardNumber || offset == 0) {
+                        console.log("inserting after");
+                        insertElement.after(card);
+                    } else {
+                        console.log("inserting before");
+                        list.insertBefore(card, insertElement);
+                    }
+                }
+                if (offset < 0) {
+                    list.prepend(card);
+                    insertElement = true;
+                }
+            }
+
+            if (favoritesList.children.length == 0) {
+                document.getElementById("favorites").style.display = "none";
+                location.hash = "";
+            } else if (gameList.children.length == 0) {
+                document.getElementById("generalheader").style.display = "none";
+                var advancmentimg = document.getElementsByClassName("advancment-easteregg")[0];
+                advancmentimg.style.display = "";
+                setTimeout(() => {
+                    advancmentimg.style.width = "300px";
+                }, 250);
+                setTimeout(() => {
+                    advancmentimg.style.transform = "translate(0%, -100%)";
+                    advancmentimg.style.opacity = "0";
+                }, 10000);
+                setTimeout(() => {
+                    advancmentimg.remove();
+                }, 11000);
+            }
+
+        }
+
+        var menuSelectedPosition = "menu-bottom-right";
+        var positionOpen = false;
+
+        // Function to add the class on hover
+        function addMenuClass(className) {
+            const menu = document.getElementById('menu');
+            menu.classList.remove(menuSelectedPosition);
+            menu.classList.add(className);
+            menu.style.display = "";
+        }
+
+        // Function to remove the class when hover ends
+        function removeMenuClass(className) {
+            if (!positionOpen) return;
+            const menu = document.getElementById('menu');
+            menu.classList.remove(className);
+            menu.classList.add(menuSelectedPosition);
+            menu.style.display = "none";
+        }
+
+        // Function to set the class permanently on click
+        function setMenuClass(className) {
+            menuSelectedPosition = className;
+            const menu = document.getElementById('menu');
+            menu.classList.add(className); // Replace all classes with the new one
+            document.getElementById('change-position').style.display = "none";
+            menu.style.display = "";
+            positionOpen = false;
+
+            if(className.includes("left")){
+                document.getElementById('menu-right').style.display = "none";
+                document.getElementById('menu-left').style.display = "";
+            } else {
+                document.getElementById('menu-right').style.display = "";
+                document.getElementById('menu-left').style.display = "none";
+            }
+        }
+
+    </script>
+
+
+    <script src="https://kit.fontawesome.com/7a44989741.js" crossorigin="anonymous"></script>
+</body>
+
+<!-- encryption link:    https://www.html-code-generator.com -->
+
+</html>

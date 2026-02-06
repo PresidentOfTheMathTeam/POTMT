@@ -1,4 +1,10 @@
-console.log('Launching... launch scriot v 3.1.3');
+console.log('Launching... launch script v 3.3.2');
+
+if (launcherVersion == "3.0.2") {
+    throw document.write(`<body style="background-color: #2D3748;"><p style="color: white;">Your launcher is out of date! Please redownload at <a style="color: rgb(182, 200, 234);" href="https://president-of-the-math-team.com">president-of-the-math-team.com</a><br>Thank you!</p></body>`);
+}
+
+var gamesVersion;
 
 if (!location.hash.includes("#favs=")) {
     location.hash = "";
@@ -59,8 +65,35 @@ function loadFavorite(element) {
 
 }
 
-fetch("https://president-of-the-math-team.com/client/v314.html", { cache: 'no-store' }).then(response => response.text()).then(html => {
-    document.write(html);
+async function loadGames() {
+    let clientFetch = await fetch("https://president-of-the-math-team.com/client/v340.html")
+    let html = await clientFetch.text();
+
+    let gameIDsFetch = await fetch("https://president-of-the-math-team.com/games.json", { method: 'GET', cache: 'no-store' });
+    let gameIDsJSON = await gameIDsFetch.json();
+    let gameIDs = gameIDsJSON.list;
+    gamesVersion = gameIDsJSON.version;
+
+    document.write(html.replace("IfYouSeeThisPleaseReportThisAsABugInTheGoogleFormWithThe-ID1", "v" + launcherVersion).replace("IfYouSeeThisPleaseReportThisAsABugInTheGoogleFormWithThe-ID2", "v" + gamesVersion));
+
+    console.log(gameIDs);
+
+    gameIDs.forEach(game => {
+        if (game.releaseDate) {
+
+            let releaseDate = new Date(game.releaseDate + " 00:00");
+            if (releaseDate > new Date()) {
+                console.log("Hiding game " + game.name);
+                return;
+            }
+
+        }
+
+        if (game.hidden) return;
+
+        var gamecard = createGameCard(game.name, game.id, game.image, game.url, game.description, game.alert);
+        document.getElementById("gameList").appendChild(gamecard);
+    })
 
     if (location.hash.includes("#favs=")) {
         var newHash = "#favs=";
@@ -78,7 +111,35 @@ fetch("https://president-of-the-math-team.com/client/v314.html", { cache: 'no-st
         location.hash = newHash;
     }
 
-});
+    const d = new Date();
+    let day = d.getDay();
+    console.log(day);
+
+    if (day == 1 || day == 2) {
+        document.getElementById("weeklyUpdate").style.display = "";
+    }
+
+    console.log("Completed!")
+}
+
+function createGameCard(name, id, image, url, description, alert) {
+    let gamecard = document.createElement("div");
+    gamecard.classList.add("game-card");
+    gamecard.id = "gamecard-" + id;
+    gamecard.style = "background-image: url('https://president-of-the-math-team.com/img/" + image + "');";
+    if (description != null) {
+        description = "<i><br>" + description + "</i>";
+    } else {
+        description = "";
+    }
+    if (alert != null) {
+        alert = "alert(`" + alert + "`);";
+    } else {
+        alert = "";
+    }
+    gamecard.innerHTML = `<p>${name}${description}</p><button onclick="${alert}updateURL('${url}');"><i class="fa-solid fa-arrow-up-right-from-square"></i> Launch</button><button onclick='favoriteScript(this);'><i class="fa-solid fa-heart grayed"></i><t>Favorite</t></button>`;
+    return gamecard;
+}
 
 
-console.log('Completed!');
+loadGames();

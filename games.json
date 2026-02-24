@@ -662,6 +662,13 @@
             "url": "https://ubg98.github.io/BoxingRandom/",
             "image": "boxingrandomtitlecard.png",
             "releaseDate": "2026-02-05"
+        },
+        {
+            "id": 110,
+            "name":"Bus Parking 3D",
+            "url": "https://busparking3d.github.io/",
+            "image": "busparking3dtitlecard.png",
+            "releaseDate": "2026-02-24"
         }
     ],
     "version": "1.0.3"

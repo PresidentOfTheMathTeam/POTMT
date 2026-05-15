@@ -615,11 +615,10 @@
         {
             "id": 98,
             "name": "CSA Calculator",
-            "url": "https://csa.potmt.online/",
+            "url": "https://csa.potmt.us/",
             "image": "",
             "description": "Calculate your class final grades!",
-            "fixedDate": "2025-12-16",
-            "hidden": true
+            "fixedDate": "2026-05-15"
         },
         {
             "id": 99,
